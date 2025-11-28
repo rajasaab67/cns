@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>Diffie-Hellman Key Exchange</h3>
+<button onclick="dh()">Generate</button>
+<pre id="o"></pre>
+
+<script>
+function modPow(b,e,m){let r=1n;b%=m;while(e){if(e&1n)r=r*b%m;b=b*b%m;e>>=1n;}return r}
+function rand(bits){let a=new Uint8Array(bits/8);crypto.getRandomValues(a);let r=0n;for(let i of a)r=(r<<8n)+BigInt(i);return r}
+
+function dh(){
+  let p=BigInt("162259276829213363391578010288127"), g=5n;
+  let a=rand(64), b=rand(64);
+
+  let A=modPow(g,a,p);
+  let B=modPow(g,b,p);
+
+  let s1=modPow(B,a,p);
+  let s2=modPow(A,b,p);
+
+  o.textContent=
+  "Alice Private: "+a+"\n"+
+  "Bob Private: "+b+"\n\n"+
+  "Alice Public: "+A+"\n"+
+  "Bob Public: "+B+"\n\n"+
+  "Shared Secret (Alice): "+s1+"\n"+
+  "Shared Secret (Bob):   "+s2;
+}
+</script>
+</body>
+</html>

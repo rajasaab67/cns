@@ -1,0 +1,33 @@
+import javax.crypto.*;
+import javax.crypto.spec.*;
+import java.util.*;
+import java.util.Base64;
+
+public class DES {
+    public static void main(String[] args) throws Exception {
+
+        Scanner sc = new Scanner(System.in);
+        Cipher cipher = Cipher.getInstance("DES");
+
+        System.out.print("Enter Plain Text: ");
+        String plain = sc.nextLine();
+
+        System.out.print("Enter 8-character Key: ");
+        String key = sc.nextLine();   
+
+        
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), "DES"));
+        String encrypted = Base64.getEncoder().encodeToString(
+                cipher.doFinal(plain.getBytes())
+        );
+        System.out.println("Encrypted Text: " + encrypted);
+
+       
+        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), "DES"));
+        String decrypted = new String(
+                cipher.doFinal(Base64.getDecoder().decode(encrypted))
+        );
+        System.out.println("Decrypted Text: " + decrypted);
+        
+    }
+}
